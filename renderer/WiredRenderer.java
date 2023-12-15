@@ -65,7 +65,13 @@ public class WiredRenderer {
             final int color
     ) {
         // 2. clip in the homogeneous coordinates (z < 0)
-        if (first.getZ() > 0 || second.getZ() > 0) {
+        if (first.getZ() > 0 || second.getZ() > 0 ||
+                first.getX() > -first.getW() || first.getX() < first.getW() ||
+                first.getY() > -first.getW() || first.getY() < first.getW() ||
+                first.getZ() > first.getW() ||
+                second.getX() > -second.getW() || second.getX() < second.getW() ||
+                second.getY() > -second.getW() || second.getY() < second.getW() ||
+                second.getZ() > second.getW()) {
             return;
         }
         // 3. dehomogenization (x, y, z)
