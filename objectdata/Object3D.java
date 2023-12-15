@@ -17,6 +17,10 @@ public abstract class Object3D {
 
     private final int color;
 
+    private int rotateX = 0;
+    private int rotateY = 0;
+    private int rotateZ = 0;
+
     public Object3D(final List<Point3D> vertexBuffer,
                     final List<Integer> indexBuffer,
                     final Mat4 modelMatrix,
@@ -42,6 +46,30 @@ public abstract class Object3D {
 
     public int getColor(){
         return color;
+    }
+
+    public int getRotateX(){
+        return rotateX;
+    }
+
+    public int getRotateY() {
+        return rotateY;
+    }
+
+    public int getRotateZ() {
+        return rotateZ;
+    }
+
+    public void setRotateX(int rotateX) {
+        this.rotateX = rotateX;
+    }
+
+    public void setRotateY(int rotateY) {
+        this.rotateY = rotateY;
+    }
+
+    public void setRotateZ(int rotateZ) {
+        this.rotateZ = rotateZ;
     }
 
     /**
