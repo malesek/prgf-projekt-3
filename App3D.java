@@ -82,6 +82,21 @@ public class App3D {
             @Override
             public void keyPressed(KeyEvent e) {
                 super.keyPressed(e);
+                //Výběr projekce
+                if (e.getKeyCode() == KeyEvent.VK_Y) {
+                    proj = new Mat4PerspRH(
+                            Math.PI / 4,
+                            raster.getHeight() / (double)raster.getWidth(),
+                            0.1,
+                            20
+                    );
+                }
+                if (e.getKeyCode() == KeyEvent.VK_X) {
+                    proj = new Mat4OrthoRH(
+                            4, 3, 0.1, 20
+                    );
+                }
+                //WASD pohyb kamerou
                 if (e.getKeyCode() == KeyEvent.VK_A) {
                     camera = camera.left(0.1);
                 }
@@ -94,138 +109,93 @@ public class App3D {
                 if (e.getKeyCode() == KeyEvent.VK_S) {
                     camera = camera.backward(0.1);
                 }
+                //Výběr aktivního tělesa
                 if (e.getKeyCode() == KeyEvent.VK_P) {
                     mode = true;
                 }
                 if (e.getKeyCode() == KeyEvent.VK_O) {
                     mode = false;
                 }
+                //Rotace tělesa podle jednotlivých os
                 if (e.getKeyCode() == KeyEvent.VK_J) {
                     if(mode)
-                        rotatePyramid(0);
+                        rotateXPyramid += 1;
                     else
-                        rotateCube(0);
+                        rotateXCube += 1;
                 }
                 if (e.getKeyCode() == KeyEvent.VK_K) {
                     if(mode)
-                        rotatePyramid(1);
+                        rotateYPyramid += 1;
                     else
-                        rotateCube(1);
+                        rotateYCube += 1;
                 }
                 if (e.getKeyCode() == KeyEvent.VK_L) {
                     if(mode)
-                        rotatePyramid(2);
+                        rotateZPyramid += 1;
                     else
-                        rotateCube(2);
+                        rotateZCube += 1;
                 }
+                //Translace vybraného tělesa
                 if (e.getKeyCode() == KeyEvent.VK_UP) {
                     if(mode){
                         translateZPyramid -= 0.1;
-                        pyramid = new Pyramid(
-                                new Mat4RotXYZ(Math.toRadians(rotateXPyramid), Math.toRadians(rotateYPyramid), Math.toRadians(rotateZPyramid))
-                                        .mul(new Mat4Transl(translateXPyramid,translateYPyramid,translateZPyramid)),
-                                0x00ffff
-                        );
                     }
                     else{
                         translateZCube -= 0.1;
-                        cube = new Cube(
-                                new Mat4RotXYZ(Math.toRadians(rotateXCube), Math.toRadians(rotateYCube), Math.toRadians(rotateZCube))
-                                        .mul(new Mat4Transl(translateXCube,translateYCube,translateZCube)),
-                                0xfdb975
-                        );
                     }
                 }
                 if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                     if(mode){
                         translateZPyramid += 0.1;
-                        pyramid = new Pyramid(
-                                new Mat4RotXYZ(Math.toRadians(rotateXPyramid), Math.toRadians(rotateYPyramid), Math.toRadians(rotateZPyramid))
-                                        .mul(new Mat4Transl(translateXPyramid,translateYPyramid,translateZPyramid)),
-                                0x00ffff
-                        );
                     }
                     else{
                         translateZCube += 0.1;
-                        cube = new Cube(
-                                new Mat4RotXYZ(Math.toRadians(rotateXCube), Math.toRadians(rotateYCube), Math.toRadians(rotateZCube))
-                                        .mul(new Mat4Transl(translateXCube,translateYCube,translateZCube)),
-                                0xfdb975
-                        );
                     }
                 }
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                     if(mode){
                         translateXPyramid += 0.1;
-                        pyramid = new Pyramid(
-                                new Mat4RotXYZ(Math.toRadians(rotateXPyramid), Math.toRadians(rotateYPyramid), Math.toRadians(rotateZPyramid))
-                                        .mul(new Mat4Transl(translateXPyramid,translateYPyramid,translateZPyramid)),
-                                0x00ffff
-                        );
                     }
                     else{
                         translateXCube += 0.1;
-                        cube = new Cube(
-                                new Mat4RotXYZ(Math.toRadians(rotateXCube), Math.toRadians(rotateYCube), Math.toRadians(rotateZCube))
-                                        .mul(new Mat4Transl(translateXCube,translateYCube,translateZCube)),
-                                0xfdb975
-                        );
                     }
                 }
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                     if(mode){
                         translateXPyramid -= 0.1;
-                        pyramid = new Pyramid(
-                                new Mat4RotXYZ(Math.toRadians(rotateXPyramid), Math.toRadians(rotateYPyramid), Math.toRadians(rotateZPyramid))
-                                        .mul(new Mat4Transl(translateXPyramid,translateYPyramid,translateZPyramid)),
-                                0x00ffff
-                        );
                     }
                     else{
                         translateXCube -= 0.1;
-                        cube = new Cube(
-                                new Mat4RotXYZ(Math.toRadians(rotateXCube), Math.toRadians(rotateYCube), Math.toRadians(rotateZCube))
-                                        .mul(new Mat4Transl(translateXCube,translateYCube,translateZCube)),
-                                0xfdb975
-                        );
                     }
                 }
                 if (e.getKeyCode() == KeyEvent.VK_M) {
                     if(mode){
                         translateYPyramid -= 0.1;
-                        pyramid = new Pyramid(
-                                new Mat4RotXYZ(Math.toRadians(rotateXPyramid), Math.toRadians(rotateYPyramid), Math.toRadians(rotateZPyramid))
-                                        .mul(new Mat4Transl(translateXPyramid,translateYPyramid,translateZPyramid)),
-                                0x00ffff
-                        );
                     }
                     else{
                         translateYCube -= 0.1;
-                        cube = new Cube(
-                                new Mat4RotXYZ(Math.toRadians(rotateXCube), Math.toRadians(rotateYCube), Math.toRadians(rotateZCube))
-                                        .mul(new Mat4Transl(translateXCube,translateYCube,translateZCube)),
-                                0xfdb975
-                        );
                     }
                 }
                 if (e.getKeyCode() == KeyEvent.VK_N) {
                     if(mode){
                         translateYPyramid += 0.1;
-                        pyramid = new Pyramid(
-                                new Mat4RotXYZ(Math.toRadians(rotateXPyramid), Math.toRadians(rotateYPyramid), Math.toRadians(rotateZPyramid))
-                                        .mul(new Mat4Transl(translateXPyramid,translateYPyramid,translateZPyramid)),
-                                0x00ffff
-                        );
+
                     }
                     else{
                         translateYCube += 0.1;
-                        cube = new Cube(
-                                new Mat4RotXYZ(Math.toRadians(rotateXCube), Math.toRadians(rotateYCube), Math.toRadians(rotateZCube))
-                                        .mul(new Mat4Transl(translateXCube,translateYCube,translateZCube)),
-                                0xfdb975
-                        );
                     }
                 }
+                //Uložení nových objektů pro vykreslení
+                pyramid = new Pyramid(
+                        new Mat4RotXYZ(Math.toRadians(rotateXPyramid), Math.toRadians(rotateYPyramid), Math.toRadians(rotateZPyramid))
+                                .mul(new Mat4Transl(translateXPyramid,translateYPyramid,translateZPyramid)),
+                        0x00ffff
+                );
+                cube = new Cube(
+                        new Mat4RotXYZ(Math.toRadians(rotateXCube), Math.toRadians(rotateYCube), Math.toRadians(rotateZCube))
+                                .mul(new Mat4Transl(translateXCube,translateYCube,translateZCube)),
+                        0xfdb975
+                );
                 drawScene();
             }
         });
@@ -262,56 +232,6 @@ public class App3D {
 
         initScene();
     }
-
-    private void rotatePyramid(int rotateDirection){
-        if(rotateDirection == 0){
-            rotateXPyramid += 1;
-            pyramid = new Pyramid(
-                    new Mat4RotXYZ(Math.toRadians(rotateXPyramid), Math.toRadians(rotateYPyramid), Math.toRadians(rotateZPyramid))
-                            .mul(new Mat4Transl(translateXPyramid,translateYPyramid,translateZPyramid)),
-                    0x00ffff
-            );
-        } else if (rotateDirection == 1) {
-            rotateYPyramid += 1;
-            pyramid = new Pyramid(
-                    new Mat4RotXYZ(Math.toRadians(rotateXPyramid), Math.toRadians(rotateYPyramid), Math.toRadians(rotateZPyramid))
-                            .mul(new Mat4Transl(translateXPyramid,translateYPyramid,translateZPyramid)),
-                    0x00ffff
-            );
-        } else if (rotateDirection == 2) {
-            rotateZPyramid += 1;
-            pyramid = new Pyramid(
-                    new Mat4RotXYZ(Math.toRadians(rotateXPyramid), Math.toRadians(rotateYPyramid), Math.toRadians(rotateZPyramid))
-                            .mul(new Mat4Transl(translateXPyramid,translateYPyramid,translateZPyramid)),
-                    0x00ffff
-            );
-        }
-    }
-    private void rotateCube(int rotateDirection){
-        if(rotateDirection == 0){
-            rotateXCube += 1;
-            cube = new Cube(
-                    new Mat4RotXYZ(Math.toRadians(rotateXCube), Math.toRadians(rotateYCube), Math.toRadians(rotateZCube))
-                            .mul(new Mat4Transl(translateXCube,translateYCube,translateZCube)),
-                    0xfdb975
-            );
-        } else if (rotateDirection == 1) {
-            rotateYCube += 1;
-            cube = new Cube(
-                    new Mat4RotXYZ(Math.toRadians(rotateXCube), Math.toRadians(rotateYCube), Math.toRadians(rotateZCube))
-                            .mul(new Mat4Transl(translateXCube,translateYCube,translateZCube)),
-                    0xfdb975
-            );
-        } else if (rotateDirection == 2) {
-            rotateZCube += 1;
-            cube = new Cube(
-                    new Mat4RotXYZ(Math.toRadians(rotateXCube), Math.toRadians(rotateYCube), Math.toRadians(rotateZCube))
-                            .mul(new Mat4Transl(translateXCube,translateYCube,translateZCube)),
-                    0xfdb975
-            );
-        }
-    }
-
     public void initScene() {
         camera = new Camera(
                 new Vec3D(0, 10, 0),
